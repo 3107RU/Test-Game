@@ -46,11 +46,7 @@ int main(int argc, char **argv) {
 #ifdef EMSCRIPTEN
   std::string cfg = readConfig();
 #else
-  if (argc != 2) {
-    std::cout << "Usage: game path_to_cfg" << std::endl;
-    return EXIT_FAILURE;
-  }
-  std::string cfg = readConfig(argv[1]);
+  std::string cfg = readConfig(argc >= 2 ? argv[1] : "game.cfg");
 #endif
 
   if (!glfwInit()) {
@@ -63,6 +59,7 @@ int main(int argc, char **argv) {
   auto window = glfwCreateWindow(WNDSIZE, WNDSIZE, "Game", nullptr, nullptr);
   if (!window) {
     glfwTerminate();
+    std::cout << "Failed to create window" << std::endl;
     return EXIT_FAILURE;
   }
 
@@ -125,6 +122,8 @@ int main(int argc, char **argv) {
   });
 
   auto loop = [](void *scene) { reinterpret_cast<Scene *>(scene)->loop(); };
+
+  std::cout << "Main loop..." << std::endl;
 
 #ifdef EMSCRIPTEN
   emscripten_set_main_loop_arg(loop, &scene, 0, 1);
