@@ -1,0 +1,64 @@
+<!--
+ Alex Light (dev@3107.ru)
+ https://github.com/3107RU/Test-Game
+-->
+<!doctype html>
+<html lang="en-us">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title>Game</title>
+  <style>
+    body {
+      position: relative;
+    }
+
+    canvas {
+      position: absolute;
+      left: 50%;
+      transform: translate(-50%);
+      border: 0px none;
+      background-color: black;
+    }
+
+    button {
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      transform: translate(-50%);
+      opacity: .6;
+    }
+  </style>
+</head>
+
+<body>
+  <canvas id="canvas" oncontextmenu="event.preventDefault()" tabindex=-1></canvas>
+  <button onclick="Module.requestFullscreen(true,true)">&#10530;</button>
+  <script type='text/javascript'>
+    var Module = {
+      preRun: [],
+      postRun: [],
+      print: function (text) {
+        if (arguments.length > 1) text = Array.prototype.slice.call(arguments).join(' ');
+        console.log(text);
+      },
+      printErr: function (text) {
+        if (arguments.length > 1) text = Array.prototype.slice.call(arguments).join(' ');
+        console.error(text);
+      },
+      canvas: (function () {
+        var canvas = document.getElementById('canvas');
+        canvas.addEventListener("webglcontextlost", function (e) {
+          alert('WebGL context lost. You will need to reload the page.'); e.preventDefault();
+        }, false);
+        return canvas;
+      })(),
+      wasmBinary: Uint8Array.from(atob("{{{WASM}}}"), c => c.charCodeAt(0)).buffer,
+      gameConfig: "{{{CONFIG}}}"
+    };
+    { { { SCRIPT } } }
+  </script>
+</body>
+
+</html>
