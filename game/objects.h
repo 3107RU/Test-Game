@@ -61,7 +61,7 @@ class Objects {
    * @brief Треугольники и буфер opengl не совпадают, надо обновить
    *
    */
-  bool changed = false;
+  bool changed = true;
   /**
    * @brief класс программы отрисовки
    *
