@@ -11,7 +11,7 @@
 
 /**
  * @brief Обобщенный класс перемещаемого объекта
- * 
+ *
  */
 template <typename T>
 struct Sprite : public Objects {
@@ -38,17 +38,17 @@ struct Sprite : public Objects {
   Speed speedDelta = {0.f, 0.f};
   /**
    * @brief типа вес - инерционность
-   * 
+   *
    */
   GLfloat weight;
   /**
    * @brief ограничение скоорости
-   * 
+   *
    */
   GLfloat speedLimit;
   /**
    * @brief указатель на полигон
-   * 
+   *
    */
   ObjectPtr object;
   /**
@@ -107,11 +107,11 @@ struct Sprite : public Objects {
             if (figures.inside(pt)) {
               pt = sprite
                        .first;  // Видимо есть еще грань или фигура рядом, стоим
-              //std::cout << "Pt will be inside figure after any move - stop!"
+              // std::cout << "Pt will be inside figure after any move - stop!"
               //          << std::endl;
             }
           } else {
-            //std::cout << "Pt to close to figure - stop!" << std::endl;
+            // std::cout << "Pt to close to figure - stop!" << std::endl;
             pt = sprite.first;  // Мы уже вплотную, стоим
           }
           // Развернем вектор скорости в соответствии с углом отражения
@@ -120,12 +120,12 @@ struct Sprite : public Objects {
           speedDelta = g::vec(speed, g::norm(speed) - dst);
         } else {
           pt = sprite.first;  // Это странно, линия целиком внутри?
-          //std::cout << "Line inside figure!" << std::endl;
+          // std::cout << "Line inside figure!" << std::endl;
         }
       }
       // Обновим позицию и вертексы
       if (sprite.first != pt) {
-        sprite.first = pt;
+        sprite.first = g::ensureInScene(pt);
         Objects::update(object, g::points(sprite));
         return true;
       }
@@ -226,7 +226,8 @@ struct Zomby : public Sprite<Rect> {
       if (!dest) dest = std::make_shared<Point>();
       *dest = gamer->sprite.first;
       pt = *dest;
-      speedLimit = score ? zombySpeedLimit + score * zombySpeedFromScoreKoef : 0.f;
+      speedLimit =
+          score ? zombySpeedLimit + score * zombySpeedFromScoreKoef : 0.f;
     } else {  // Если не видим снизим скорость и поплетемся к случайной точке
               // рядом с местом где видели игрока последний раз
       if (dest) pt = *dest + rnd.point2d();

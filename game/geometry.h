@@ -25,8 +25,8 @@ namespace Geometry {
 template <typename T>
 bool ptInTriangle(const T &A, const T &B, const T &C, const T &P) {
   auto side = [&](const T &a, const T &b) {
-      return (b[0] - a[0]) * (P[1] - a[1]) - (b[1] - a[1]) * (P[0] - a[0]) >= 0.f;
-  };  
+    return (b[0] - a[0]) * (P[1] - a[1]) - (b[1] - a[1]) * (P[0] - a[0]) >= 0.f;
+  };
   return side(A, B) && side(B, C) && side(C, A);
 };
 
@@ -451,6 +451,20 @@ void invisiblePoligon(const T &P, const T &A, const T &B, std::vector<T> &pts) {
     pushUnique(rays[1].border);
     pushUnique(rays[1].origin);
   }
+}
+
+/**
+ * @brief Ограничиваем позицию сценой
+ * 
+ * @param pt vector
+ * @return vector
+ */
+template <typename T>
+T ensureInScene(const T &pt) {
+  auto lim = [](auto v) {
+    return std::max(std::min(v, gameSize), -gameSize);
+  };
+  return T{lim(pt[0]), lim(pt[1])};
 }
 
 }  // namespace Geometry

@@ -61,17 +61,19 @@ void Scene::processGamepad() {
 }
 
 void Scene::loop() {
-  process();  // Обработаем действия
+  // Обработаем действия
+  process();
 
+  // Очистим фон
   glClearColor(backColor[0], backColor[1], backColor[2], backColor[3]);
   glClear(GL_COLOR_BUFFER_BIT);
 
-  // Нарисум все
+  // Нарисуем все
   for (auto z : zombies) z->draw();  // Зобмби под темнотой
   darkness.draw();
   figures.draw();
   if (prize) prize->draw();
-  gamer->draw();
+  if (gamer) gamer->draw();
 
   // Выведем текст
   std::stringstream ss;
@@ -137,7 +139,8 @@ void Scene::updateDarkness(const Point &pt) {
       g::invisiblePoligon(pt, A, B, pts);
       if (pts.size() > 2) {
         // По идее здесь можно попробовать объединить полигоны
-        // С другой стороны наверное gpu быстрее отбросит ненужное, чем это делать на cpu
+        // С другой стороны наверное gpu быстрее отбросит ненужное, чем это
+        // делать на cpu
         darkness.add(pts);
       }
     }
